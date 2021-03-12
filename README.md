@@ -173,7 +173,7 @@ Public License (GNU GPL). [2]
 `Packetfence` supports 4 different Compliance Check software, The free/open
 source ones are marked below.
 
-- `OpenVAS/GVM` - _Free/open source_
+- `OpenVAS/GVM` - _free/open source_
 - `WMI` (Windows Management Instrumentation) - _free of charge_
 - `Rapid7`
 - `Nessus` (and `Nessus 6`)
