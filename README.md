@@ -4,14 +4,26 @@
 
 ## Index
 
-1. Contributors
-2. Project Scope
-3. Abstract
-4. Studied Technology and Headlines
-5. Tests and Conclusions
-6. General Evaluation
-7. Appendix
-8. References
+- [Contributors](#contributors)
+- [Project Scope](#project-scope)
+- [Abstract](#abstract)
+- [Studied Technology and Headlines](#studied-technology-and-headlines)
+  - [Packetfence](#packetfence)
+  - [802.1X Support](#8021x-support)
+  - [Registration of Devices](#registration-of-devices)
+  - [Wireless Integration](#wireless-integration)
+  - [Detection of Abnormal Network
+    Activities](#detection-of-abnormal-network-activities)
+  - [Windows Management Instrumentation
+    (WMI)](#windows-management-instrumentation-wmi)
+  - [Proactive Vulnerability Scans](#proactive-vulnerability-scans)
+  - [Security Agents](#security-agents)
+  - [Remediation Through a Captive Portal](#remediation-through-a-captive-portal)
+  - [OpenVAS/GVM](#openvasgvm)
+- [Tests and Conclusions](#tests-and-conclusions)
+- [General Evaluation]
+- [Appendix]
+- [References]
 
 ---
 
@@ -66,7 +78,7 @@ the tests performed and their results have been detailed inside this document.
 The softwares which will be used for open source NAC solution are detailed
 below.
 
-## Packetfence
+#### Packetfence
 
 PacketFence is a fully supported, trusted, Free and Open Source network access
 control (NAC) solution. Boasting an impressive feature set including a
