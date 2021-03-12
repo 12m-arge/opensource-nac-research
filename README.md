@@ -29,9 +29,7 @@
 
 ## CONTRIBUTORS
 
----
-
-| NAME-SURNAME      |
+| Name - Surname    |
 | :---------------- |
 | ARDA ÖZKAL        |
 | FATIH MALAKÇI     |
@@ -42,8 +40,6 @@
 
 ## PROJECT SCOPE
 
----
-
 This is a research of open source nac solutions that can be used instead of
 commercial counterparts by physically constructing a similar big scale
 infrastructure environment. Also testing the chosen open source nac solution in
@@ -52,8 +48,6 @@ this environment.
 ---
 
 ## ABSTRACT
-
----
 
 The purpose of this project is establishing an infrastructure that uses an open
 source NAC software. Our wish from this system is to scan user devices who wants
