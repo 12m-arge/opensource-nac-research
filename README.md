@@ -82,7 +82,7 @@ integration with the Snort IDS and the Nessus vulnerability scanner; PacketFence
 can be used to effectively secure networks - from small to very large
 heterogeneous networks.
 
-![Packetfence](https://www.packetfence.org/img/components.png)
+![Packetfence](images/packetfence.png)
 
 #### 802.1X Support
 
