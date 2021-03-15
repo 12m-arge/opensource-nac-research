@@ -257,7 +257,7 @@ physical server environment.**
 Start the installation by updating the system.
 
 As the `root`: <ins>Unless otherwise stated, perform operations as root user.
-</ins>
+!!</ins>
 
 ```bash
 # yum update
@@ -346,4 +346,56 @@ adding the Aruba 2930M switch.
   groups.
 
 ![roles-tab](images/add_switch2.png)
+
+- CLI Tab : In this tab, username/password information is entered in order to
+  make CLI connection to the switch.
+
+![cli-tab](images/add_switch3.png)
+
+- RADIUS Tab : In this tab, a password must be entered for RADIUS.
+
+![radius-tab](images/add_switch4.png)
+
+You can also edit from the `/usr/local/pf/conf/switches.conf` file. The
+configuration used in the tests is arranged as follows.
+
+```
+[default]
+type=Aruba::2930M
+cliAccess=Y
+# Command Line Interface·
+# cliTransport could be: Telnet, SSH or Serial
+cliTransport=SSH
+cliUser=admin
+cliPwd=tei11252
+always_trigger=1
+
+[172.22.41.253]
+description=Aruba
+registrationVlan=46
+defaultVlan=45
+isolationVlan=45
+radiusSecret=tei1234
+RoleMap=Y
+registrationUrl=http://172.22.20.22/Aruba::2930M
+coaPort=3799
+UrlMap=Y
+isolationRole=45
+registrationRole=44
+SNMPCommunityWrite=teitest1
+group=default
+SNMPVersion=2c
+SNMPVersionTrap=2c
+level3Vlan=44
+level1Vlan=42
+level2Vlan=43
+SNMPCommunityRead=teitest1
+VoIPEnabled=Y
+SNMPCommunityTrap=teitest1
+useCoA=N
+cliPwd=tei112552
+cliEnablePwd=tei112552
+```
+
+#### Adding Domains to Active Directory
 
