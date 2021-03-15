@@ -197,7 +197,7 @@ After 2017 `OpenVAS` name is changed to `GVM` as part of the version 10 update.
 ## References
 
 [1]:  https://www.packetfence.org/
-[2]:  https://www.openvas.org/
+[2]  https://www.openvas.org/ \
 [3]  https://packages.debian.org/buster/openvas \
 [4]  https://community.greenbone.net/t/shutting-down-gcf-http-download/5339 \
 [5]  https://community.greenbone.net/t/gvm-20-08-stable-initial-release-2020-08-12/6312 \
