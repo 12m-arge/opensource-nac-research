@@ -150,7 +150,7 @@ reducing costly help desk intervention.
 
 `PacketFence` supports several isolation techniques, including VLAN isolation
 with VoIP support (even in heterogeneous environments) for multiple switch
-vendors [bkz][1].
+vendors [1].
 
 ### OpenVAS/GVM
 
@@ -162,7 +162,7 @@ test.
 
 The scanner is developed and maintained by Greenbone Networks since 2009. The
 works are contributed as Open Source to the community under the GNU General
-Public License (GNU GPL)[bkz][2].
+Public License (GNU GPL) [2].
 
 ---
 
@@ -196,15 +196,15 @@ After 2017 `OpenVAS` name is changed to `GVM` as part of the version 10 update.
 
 ## References
 
-[1]:  https://www.packetfence.org/
-[2]  https://www.openvas.org/ \
-[3]  https://packages.debian.org/buster/openvas \
-[4]  https://community.greenbone.net/t/shutting-down-gcf-http-download/5339 \
-[5]  https://community.greenbone.net/t/gvm-20-08-stable-initial-release-2020-08-12/6312 \
-[6]  https://github.com/inverse-inc/packetfence/issues/5791 \
-[7]  https://docs.greenbone.net/API/GMP/gmp-20.08.html#changes \
-[8]  https://github.com/inverse-inc/packetfence/pull/6082 \
-[9]  https://github.com/inverse-inc/packetfence/issues/5877
+[1] https://www.packetfence.org/ \
+[2] https://www.openvas.org/ \
+[3] https://packages.debian.org/buster/openvas \
+[4] https://community.greenbone.net/t/shutting-down-gcf-http-download/5339 \
+[5] https://community.greenbone.net/t/gvm-20-08-stable-initial-release-2020-08-12/6312 \
+[6] https://github.com/inverse-inc/packetfence/issues/5791 \
+[7] https://docs.greenbone.net/API/GMP/gmp-20.08.html#changes \
+[8] https://github.com/inverse-inc/packetfence/pull/6082 \
+[9] https://github.com/inverse-inc/packetfence/issues/5877
 
 ---
 
@@ -220,8 +220,87 @@ to be used for the Open Source NAC solution.
 - [2. GVM-20](#openvas)
   - [2.1 Installation](#install-gvm)
 
+---
+
 ### 1. PacketFence
 
 PacketFence is a fully supported, trusted, Free and Open Source network access
 control (NAC) system.
+
+#### 1.1 System Requirements
+
+PacketFence reuses many components in an infrastructure. Nonetheless, it will
+install the following ones and manage them itself:
+
+```
+database server (MariaDB)
+web server (Apache)
+DHCP server (PacketFence)
+RADIUS server (FreeRADIUS)
+firewall (iptables)
+```
+
+The following provides a list of the minimum server hardware recommendations:
+
+```
+Intel or AMD CPU 3 GHz, 2 CPU cores
+12 GB of RAM (16 GB recommended)
+100 GB of disk space (RAID-1 recommended)
+1 network card (2 recommended)
+```
+
+**For installation, a machine with Centos 7 operating system is used in a
+physical server environment.**
+
+#### 1.2 Installation
+
+Start the installation by updating the system.
+
+As the `root`: **Unless otherwise stated, perform operations as root user.**
+
+```bash
+# yum update
+```
+
+PacketFence will not work properly if SELinux or AppArmor are enabled. You will
+need to explicitly disable SELinux from the `/etc/selinux/config` file and
+reboot the machine.
+
+```
+Disable firewall
+Disable SELinux
+```
+
+Continue by installing the kernel development package.
+
+```bash
+# yum install kernel-devel-$(uname -r)
+```
+
+Add the repo for the PacketFence installation process.
+
+```bash
+# yum localinstall http://packetfence.org/downloads/PacketFence/RHEL7/packetfence-release-7.stable.noarch.rpm
+```
+
+Once the repository is defined, you can install PacketFence with all its
+dependencies, and the required external services (database server, DHCP server,
+RADIUS server) using:
+
+```bash
+# yum install --enablerepo=packetfence packetfence
+```
+
+#### 1.3 Setting and Configuring
+
+##### Interface Configuration
+
+First of all, we adjust the network interfaces in our device. To do this,
+configure the network interfaces under `/etc/sysconfig/network-scripts/` on the
+Centos 7 machine. To view it, you can view the interfaces in the **Configuration
+-> Network Configuration -> Interfaces** section of the PacketFence web
+interface.
+
+![add-interface](images/add_interface.png)
+
 
