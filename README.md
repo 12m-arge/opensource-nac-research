@@ -302,7 +302,7 @@ Centos 7 machine. To view it, you can view the interfaces in the **Configuration
 -> Network Configuration -> Interfaces** section of the PacketFence web
 interface.
 
-![add-interface](images/add_interface.png)
+![add-interface](images/definition-switch.png)
 
 To determine the type of interfaces, select the interface you will configure
 from the list. You can edit it from the `Type` section.
