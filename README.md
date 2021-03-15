@@ -204,7 +204,7 @@ After 2017 `OpenVAS` name is changed to `GVM` as part of the version 10 update.
 [6]  https://github.com/inverse-inc/packetfence/issues/5791 \
 [7]  https://docs.greenbone.net/API/GMP/gmp-20.08.html#changes \
 [8]  https://github.com/inverse-inc/packetfence/pull/6082 \
-[9]  https://github.com/inverse-inc/packetfence/issues/5877 \
+[9]  https://github.com/inverse-inc/packetfence/issues/5877
 
 ---
 
@@ -213,12 +213,12 @@ After 2017 `OpenVAS` name is changed to `GVM` as part of the version 10 update.
 The document contains detailed information on the installations of the software
 to be used for the Open Source NAC solution.
 
-[1. PacketFence](#packetfence) \
-[1.1 System Requirements](#system-requirements) \
-[1.2 Installation](#install-pf) \
-[1.3 Setting and Configuring](#setting) \
-[2. GVM-20](#openvas) \
-[2.1 Installation](#install-gvm)
+- [1. PacketFence](#packetfence)
+  - [1.1 System Requirements](#system-requirements)
+  - [1.2 Installation](#install-pf)
+  - [1.3 Setting and Configuring](#setting)
+- [2. GVM-20](#openvas)
+  - [2.1 Installation](#install-gvm)
 
 ### 1. PacketFence
 
