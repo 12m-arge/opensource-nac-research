@@ -256,7 +256,8 @@ physical server environment.**
 
 Start the installation by updating the system.
 
-As the `root`: ~~Unless otherwise stated, perform operations as root user.~~
+As the `root`: <ins>Unless otherwise stated, perform operations as root user.
+</ins>
 
 ```bash
 # yum update
