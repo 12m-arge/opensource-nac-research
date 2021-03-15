@@ -256,7 +256,7 @@ physical server environment.**
 
 Start the installation by updating the system.
 
-As the `root`: **Unless otherwise stated, perform operations as root user.**
+As the `root`: ~~Unless otherwise stated, perform operations as root user.~~
 
 ```bash
 # yum update
@@ -293,14 +293,56 @@ RADIUS server) using:
 
 #### 1.3 Setting and Configuring
 
-##### Interface Configuration
+#### Interface Configuration
 
 First of all, we adjust the network interfaces in our device. To do this,
-configure the network interfaces under `/etc/sysconfig/network-scripts/` on the
+configure the network interfaces under `/etc/sysconfig/network-scripts` on the
 Centos 7 machine. To view it, you can view the interfaces in the **Configuration
 -> Network Configuration -> Interfaces** section of the PacketFence web
 interface.
 
 ![add-interface](images/add_interface.png)
 
+To determine the type of interfaces, select the interface you will configure
+from the list. You can edit it from the `Type` section.
+
+![add-interface2](images/add_interface2.png)
+
+You can also edit from `/usr/local/pf/conf/networks.conf` file. The example
+shows the necessary settings for "isolation network".
+
+```
+[172.22.45.0]
+dns=172.22.45.1
+gateway=172.22.45.1
+domain-name=vlan-isolation.
+pool_backend=memory
+named=enabled
+dhcp_end=172.22.45.246
+netmask=255.255.255.0
+split_network=disabled
+netflow_accounting_enabled=disabled
+dhcp_start=172.22.45.10
+nat_enabled=disabled
+dhcp_max_lease_time=30
+fake_mac_enabled=disabled
+dhcpd=enabled
+type=vlan-isolation
+dhcp_default_lease_time=30
+coa=disabled
+id=172.22.45.0
+```
+
+#### Adding a Switch
+
+To add a Switch, select a group by clicking the `New Switch` button from **Web
+UI -> Policies and Access Control -> Switches** menu. Below is an example of
+adding the Aruba 2930M switch.
+
+![definition-tab](images/add_switch.png)
+
+- Roles Tab : This tab specifies which roles will be assigned to which VLAN
+  groups.
+
+![roles-tab](images/add_switch2.png)
 
