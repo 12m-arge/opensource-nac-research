@@ -12,18 +12,16 @@
     - [802.1X Support](#8021x-support)
     - [Registration of Devices](#registration-of-devices)
     - [Wireless Integration](#wireless-integration)
-    - [Detection of Abnormal Network
-      Activities](#detection-of-abnormal-network-activities)
-    - [Windows Management Instrumentation
-      (WMI)](#windows-management-instrumentation-wmi)
+    - [Detection of Abnormal Network Activities](#detection-of-abnormal-network-activities)
+    - [Windows Management Instrumentation (WMI)](#windows-management-instrumentation-wmi)
     - [Proactive Vulnerability Scans](#proactive-vulnerability-scans)
     - [Security Agents](#security-agents)
     - [Remediation Through a Captive Portal](#remediation-through-a-captive-portal)
   - [OpenVAS/GVM](#openvasgvm)
 - [Tests and Conclusions](#tests-and-conclusions)
 - [General Evaluation]
-- [Appendix]
-- [References]
+- [Appendix](#appendix)
+- [References](#references)
 
 ---
 
@@ -152,7 +150,7 @@ reducing costly help desk intervention.
 
 `PacketFence` supports several isolation techniques, including VLAN isolation
 with VoIP support (even in heterogeneous environments) for multiple switch
-vendors.
+vendors [][1].
 
 ### OpenVAS/GVM
 
@@ -164,7 +162,7 @@ test.
 
 The scanner is developed and maintained by Greenbone Networks since 2009. The
 works are contributed as Open Source to the community under the GNU General
-Public License (GNU GPL). [2]
+Public License (GNU GPL)[][2].
 
 ---
 
@@ -188,4 +186,43 @@ Greenbone Networks GmbH.
 
 After 2017 `OpenVAS` name is changed to `GVM` as part of the version 10 update.
 
-#### Preperation
+---
+
+## Appendix
+
+[Install Guide][install-guide]
+
+---
+
+## References
+
+[1]:  https://www.packetfence.org/
+[2]:  https://www.openvas.org/
+[3]:  https://packages.debian.org/buster/openvas
+[4]:  https://community.greenbone.net/t/shutting-down-gcf-http-download/5339
+[5]:  https://community.greenbone.net/t/gvm-20-08-stable-initial-release-2020-08-12/6312
+[6]:  https://github.com/inverse-inc/packetfence/issues/5791
+[7]:  https://docs.greenbone.net/API/GMP/gmp-20.08.html#changes
+[8]:  https://github.com/inverse-inc/packetfence/pull/6082
+[9]:  https://github.com/inverse-inc/packetfence/issues/5877
+
+---
+
+## Install Guide
+
+The document contains detailed information on the installations of the software
+to be used for the Open Source NAC solution.
+
+[1. PacketFence][packetfence]
+  [1.1 System Requirements][system-requirements]
+  [1.2 Installation][install-pf]
+  [1.3 Setting and Configuring][setting]
+[2. GVM-20][openvas]
+  [2.1 Installation][install-gvm]
+
+
+### 1. PacketFence[][packetfence]
+
+PacketFence is a fully supported, trusted, Free and Open Source network access
+control (NAC) system.
+
