@@ -302,7 +302,7 @@ Centos 7 machine. To view it, you can view the interfaces in the **Configuration
 -> Network Configuration -> Interfaces** section of the PacketFence web
 interface.
 
-![add-interface](images/definition-switch.png)
+![add-interface](images/add_interface.png)
 
 To determine the type of interfaces, select the interface you will configure
 from the list. You can edit it from the `Type` section.
@@ -340,7 +340,7 @@ To add a Switch, select a group by clicking the `New Switch` button from **Web
 UI -> Policies and Access Control -> Switches** menu. Below is an example of
 adding the Aruba 2930M switch.
 
-![definition-tab](images/add_switch.png)
+![definition-tab](images/definition-switch.png)
 
 - Roles Tab : This tab specifies which roles will be assigned to which VLAN
   groups.
