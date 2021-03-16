@@ -8,7 +8,7 @@
 - [Project Scope](#project-scope)
 - [Abstract](#abstract)
 - [Studied Technology and Headlines](#studied-technology-and-headlines)
-  - [Packetfence](#packetfence)
+  - [Packetfence](#packetfence-main)
     - [802.1X Support](#8021x-support)
     - [Registration of Devices](#registration-of-devices)
     - [Wireless Integration](#wireless-integration)
