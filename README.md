@@ -367,7 +367,7 @@ cliAccess=Y
 # cliTransport could be: Telnet, SSH or Serial
 cliTransport=SSH
 cliUser=admin
-cliPwd=tei11252
+cliPwd=arge11252
 always_trigger=1
 
 [172.22.41.253]
@@ -375,26 +375,26 @@ description=Aruba
 registrationVlan=46
 defaultVlan=45
 isolationVlan=45
-radiusSecret=tei1234
+radiusSecret=arge1234
 RoleMap=Y
 registrationUrl=http://172.22.20.22/Aruba::2930M
 coaPort=3799
 UrlMap=Y
 isolationRole=45
 registrationRole=44
-SNMPCommunityWrite=teitest1
+SNMPCommunityWrite=argetest1
 group=default
 SNMPVersion=2c
 SNMPVersionTrap=2c
 level3Vlan=44
 level1Vlan=42
 level2Vlan=43
-SNMPCommunityRead=teitest1
+SNMPCommunityRead=argetest1
 VoIPEnabled=Y
-SNMPCommunityTrap=teitest1
+SNMPCommunityTrap=argetest1
 useCoA=N
-cliPwd=tei112552
-cliEnablePwd=tei112552
+cliPwd=arge112552
+cliEnablePwd=arge112552
 ```
 
 #### Adding Domains to Active Directory
@@ -409,16 +409,16 @@ You can also edit from `/usr/local/pf/conf/domain.conf` file. The configuration
 used in the tests is arranged as follows.
 
 ```
-[teilab]
+[argelab]
 status=enabled
 ntlm_cache_filter=(&(samAccountName=*)(!(|(lockoutTime=>0)(userAccountControl:1.2.840.113556.1.4.803:=2))))
 registration=0
 ntlm_cache_expiry=3600
-dns_name=tei.lab
+dns_name=arge.lab
 dns_servers=172.22.20.20
 ou=Computers
 ntlm_cache_on_connection=disabled
-workgroup=TEI
+workgroup=arge
 ntlm_cache_batch_one_at_a_time=disabled
 ad_server=172.22.20.20
 sticky_dc=*
@@ -485,7 +485,7 @@ permit_custom_attributes=disabled
 radius_auth_proxy_type=keyed-balance
 radius_auth_compute_in_pf=enabled
 eduroam_radius_auth=
-domain=teilab
+domain=argelab
 eduroam_radius_auth_proxy_type=keyed-balance
 eduroam_radius_acct=
 radius_acct_proxy_type=load-balance
@@ -493,7 +493,7 @@ radius_auth=
 eduroam_radius_auth_compute_in_pf=enabled
 eduroam_radius_acct_proxy_type=load-balance
 radius_acct=
-ldap_source=teilab
+ldap_source=argelab
 ```
 
 #### Adding a Roles
