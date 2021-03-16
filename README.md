@@ -8,7 +8,7 @@
 - [Project Scope](#project-scope)
 - [Abstract](#abstract)
 - [Studied Technology and Headlines](#studied-technology-and-headlines)
-  - [Packetfence](#packetfence-main)
+  - [Packetfence](#packetfence)
     - [802.1X Support](#8021x-support)
     - [Registration of Devices](#registration-of-devices)
     - [Wireless Integration](#wireless-integration)
@@ -213,11 +213,11 @@ After 2017 `OpenVAS` name is changed to `GVM` as part of the version 10 update.
 The document contains detailed information on the installations of the software
 to be used for the Open Source NAC solution.
 
-- [1. PacketFence](#packetfence)
+- [1. PacketFence Setup](#packetfence-setup)
   - [1.1 System Requirements](#system-requirements)
   - [1.2 Installation](#install-pf)
   - [1.3 Setting and Configuring](#setting)
-- [2. GVM-20](#openvas)
+- [2. GVM-20 Setup](#openvas-setup)
   - [2.1 Installation](#install-gvm)
 
 ---
