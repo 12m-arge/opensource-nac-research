@@ -427,7 +427,7 @@ server_name=%h
 ntlmv2_only=0
 ```
 
-#### Adding to Authentication Source
+#### Adding a Authentication Source
 
 "Authentication Source" must be added to determine the criteria by which users
 will log in. We base our tests on AD criteria.
@@ -438,10 +438,68 @@ Sources** section in the web interface.
 
 The AD Authentication Source settings used in the tests are arranged as follows.
 
-[authentication01](images/auth1.png)
+![authentication01](images/auth1.png)
 
-[authentication02](images/auth2.png)
+![authentication02](images/auth2.png)
 
-[authentication03](images/auth3.png)
+![authentication03](images/auth3.png)
+
+#### Adding a Scanner
+
+Click on the `New Scan Engine` button in the **Configuration -> Compliance ->
+Scan Engines** section in the web interface and select the Scan Engine you want
+to add.
+
+The adjustments made for the OpenVAS/GVM scanning tool used in the tests are
+arranged as follows.
+
+![scan-engine](images/scan_engine.png)
+
+#### Adding a Connection Profile
+
+Click on the `New Connection Profile` button from the **Configuration -> Policies
+and Access Control -> Connection Profiles** menu in the web interface. Make the
+necessary adjustments.
+
+Connection Profile settings named "registration" used in the tests are arranged
+as follows.
+
+![connection-profile](images/connection_profile.png)
+
+#### Adding Realm
+
+Click on the `Default Realm` button in the **Configuration -> Policies and Access
+Control -> Realms** menu in the web interface. Make the necessary adjustments.
+
+![realm01](images/realm1.png)
+
+![realm02](images/realm2.png)
+
+You can also edit from `/usr/local/pf/conf/realm.conf` file. The configuration
+used in the tests is arranged as follows.
+
+```
+[1 DEFAULT]
+permit_custom_attributes=disabled
+radius_auth_proxy_type=keyed-balance
+radius_auth_compute_in_pf=enabled
+eduroam_radius_auth=
+domain=teilab
+eduroam_radius_auth_proxy_type=keyed-balance
+eduroam_radius_acct=
+radius_acct_proxy_type=load-balance
+radius_auth=
+eduroam_radius_auth_compute_in_pf=enabled
+eduroam_radius_acct_proxy_type=load-balance
+radius_acct=
+ldap_source=teilab
+```
+
+#### Adding a Roles
+
+Click on the `New Role` button in the **Configuration -> Policies and Access
+Control -> Roles** menu in the web interface and save by giving a name.
+
+![add-role](images/add_role.png)
 
 
