@@ -222,7 +222,7 @@ to be used for the Open Source NAC solution.
 
 ---
 
-### 1. PacketFence Setup
+### 1. PacketFence
 
 PacketFence is a fully supported, trusted, Free and Open Source network access
 control (NAC) system.
