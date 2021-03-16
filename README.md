@@ -515,8 +515,8 @@ the beginning will be used to denote Root user.***
 
 #### 2.1 Installation
 
-Start the installation by installing the necessary tools and packages. As
-`root` user: <ins>!! Unless otherwise stated, perform operations as root user.
+Start the installation by installing the necessary tools and packages. As `root`
+user: <ins>!! Unless otherwise stated, perform operations as root user.
 </ins>
 
 ```bash
@@ -610,5 +610,411 @@ Add the GVM user and create the directory structure.
 # mkdir /opt/gvm/src
 # chown -R gvm:gvm /opt/gvm
 ```
+
+Continue by adding the GVM extension to the **/etc/profile** file. Add the lines
+`pathmunge /opt/gvm/sbin after` and `pathmunge /opt/gvm/bin after` using the
+command below. *Make sure that the `unset` command is placed above it.*
+
+```bash
+# sed -i "/^done/a \pathmunge /opt/gvm/sbin after" /etc/profile
+# sed -i "/^done/a \pathmunge /opt/gvm/bin after" /etc/profile
+```
+
+Install the GVM-20 packages. As the `GVM` user:
+
+```bash
+$ cd /opt/gvm/src
+$ wget -O gvm-libs-20.8.0.tar.gz https://github.com/greenbone/gvm-libs/archive/v20.8.0.tar.gz
+$ wget -O openvas-20.8.0.tar.gz https://github.com/greenbone/openvas/archive/v20.8.0.tar.gz
+$ wget -O ospd-20.8.1.tar.gz https://github.com/greenbone/ospd/archive/v20.8.1.tar.gz
+$ wget -O ospd-openvas-20.8.1.tar.gz https://github.com/greenbone/ospd-openvas/archive/v20.8.0.tar.gz
+$ wget -O gvmd-20.8.1.tar.gz https://github.com/greenbone/gvmd/archive/v20.8.0.tar.gz
+$ wget -O gsa-20.8.1.tar.gz https://github.com/greenbone/gsa/archive/v20.8.0.tar.gz
+$ wget -O openvas-smb-1.0.5.tar.gz https://github.com/greenbone/openvas-smb/archive/v1.0.5.tar.gz
+```
+
+Open the source files. As the `GVM` user:
+
+```bash
+$ cd /opt/gvm/src
+$ find . -name '*.gz' -exec tar xvfz {} \;
+```
+
+Configure each package with **make**.
+
+- for `gvm-libs`: As the `GVM` user
+
+```bash
+$ cd /opt/gvm/src
+$ export PKG_CONFIG_PATH=/opt/gvm/lib/pkgconfig
+$ cd gvm-libs-20.8.0
+$ mkdir build
+$ cd build
+$ cmake .. -DCMAKE_INSTALL_PREFIX=/opt/gvm
+$ make
+$ make doc
+$ make install
+```
+
+- for `heimdal` : As the `root` user
+
+```bash
+# cd /usr/local/src
+# wget
+# https://github.com/heimdal/heimdal/releases/download/heimdal-7.7.0/heimdal-7.7.0.tar.gz
+# tar xvfz heimdal-7.7.0.tar.gz
+# cd heimdal-7.7.0
+# ./configure --enable-otp=no --prefix=/opt/heimdal
+# make
+# make install
+# ln -s /opt/heimdal/include /opt/heimdal/include/heimdal
+# echo "/opt/heimdal/lib" > /etc/ld.so.conf.d/heimdal.conf
+# ldconfig
+```
+
+- for `scanner` : As the `GVM` user
+
+```bash
+$ cd /opt/gvm/src
+$ export PKG_CONFIG_PATH=/opt/gvm/lib/pkgconfig
+$ cd openvas-20.8.0
+$ mkdir build
+$ cd build
+$ cmake .. -DCMAKE_INSTALL_PREFIX=/opt/gvm
+$ make
+$ make doc
+$ make install
+```
+
+Install Redis using the distributed config file. As the `root` user
+
+```bash
+# cp /etc/redis.conf /etc/redis.conf.orig
+# cp /opt/gvm/src/openvas-20.8.0/config/redis-openvas.conf /etc/redis.conf
+# chown redis /etc/redis.conf
+```
+
+Change the `/etc/redis.conf` location to `/tmp/redis.sock`.
+
+```
+# unixsocket /tmp/redis.sock
+# unixsocketperm 770
+```
+
+Configure Openvas under Centos to suit the way redis works. As the `GVM` user :
+
+```bash
+$ echo "db_address = /tmp/redis.sock" > /opt/gvm/etc/openvas/openvas.conf
+```
+
+Perform the next operations while you are the `root` user.
+
+```bash
+# systemctl enable redis
+# systemctl start redis
+```
+
+Create the "disable-thp" service.
+
+```
+# cat << EOF > /etc/systemd/system/disable-thp.service
+[Unit]
+Description=Disable Transparent Huge Pages (THP)
+
+[Service]
+Type=simple
+ExecStart=/bin/sh -c “echo ‘never’ >
+/sys/kernel/mm/transparent_hugepage/enabled && echo ‘never’ > /sys/kernel/mm/transparent_hugepage/defrag”
+
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+
+Enable the service.
+
+```bash
+# systemctl daemon-reload
+# systemctl start disable-thp
+# systemctl enable disable-thp
+```
+
+Add the `GVM` user in redis group and reboot the redis.
+
+```bash
+# usermod -aG redis gvm
+# systemctl restart redis
+```
+
+In the next step, enter the information in the "/etc/sudoers" file with
+`visudo`.
+
+```
+# #Allow the user running ospd-openvas, to launch openvas with root permissions
+# gvm ALL = NOPASSWD: /opt/gvm/sbin/openvas
+# gvm ALL = NOPASSWD: /opt/gvm/sbin/gsad
+```
+
+Continue by making a few more adjustments to the system.
+
+```bash
+# echo "net.core.somaxconn = 1024" >> /etc/sysctl.conf
+# echo "vm.overcommit_memory = 1" >> /etc/sysctl.conf
+# sysctl -p
+# ldconfig
+```
+
+Synchronize the NVT data. This may take a while, wait until it has finished
+syncing the NVTs. Perform transactions when `GVM` is a user :
+
+```
+$ greenbone-nvt-sync
+```
+
+Run the query to provide the checks. You should see a value of more than 60,000
+as the number of files.
+
+```
+$ find /opt/gvm/var/lib/openvas/plugins | wc -l
+```
+
+Update the VT information.
+
+```
+$ openvas --update-vt-info
+```
+
+Continue the process by configuring **GVMD**. Perform operations when you are a
+`root` user.
+
+```
+# ln -s /usr/include /usr/include/postgresql
+```
+
+In the next step, as the `GVM` user :
+
+```bash
+$ cd /opt/gvm/src
+$ export PKG_CONFIG_PATH=/opt/gvm/lib/pkgconfig
+$ cd gvmd-20.8.1
+$ mkdir build
+$ cd build
+$ cmake .. -DCMAKE_INSTALL_PREFIX=/opt/gvm
+$ make
+$ make doc
+$ make install
+```
+
+To create a **GSA**, install the prerequisite `yarn`. As the `root` user :
+
+```bash
+# npm install -g yarn
+```
+
+Configure the **GSA**. As the `GVM` user :
+
+```bash
+$ cd /opt/gvm/src
+$ export PKG_CONFIG_PATH=/opt/gvm/lib/pkgconfig
+$ cd gsa-20.8.1
+$ mkdir build
+$ cd build
+$ cmake .. -DCMAKE_INSTALL_PREFIX=/opt/gvm
+$ make
+$ make doc
+$ make install
+
+$ greenbone-scapdata-sync
+$ greenbone-certdata-sync
+$ gvm-manage-certs -a
+```
+
+Create and install `OSPd` and `OSPd-OpenVAS`. OSPd and OSPd-OpenVAS are actually
+python packages. You must create the Python packages directory. Perform the
+operation while the `GVM` user.
+
+```bash
+$ python3 --version
+$ mkdir -p /opt/gvm/lib/python3.x/site-packages
+```
+
+As the `root` user. Install the package according to your python version.
+
+```bash
+# yum install python3x-devel
+```
+
+As the `GVM` user :
+
+```bash
+$ cd /opt/gvm/src
+$ export PYTHONPATH=/opt/gvm/lib/python3.x/site-packages
+$ export PKG_CONFIG_PATH=/opt/gvm/lib/pkgconfig
+$ cd ospd-20.8.1
+$ python3 setup.py install --prefix=/opt/gvm
+
+$ cd /opt/gvm/src
+$ export PYTHONPATH=/opt/gvm/lib/python3.x/site-packages
+$ export PKG_CONFIG_PATH=/opt/gvm/lib/pkgconfig
+$ cd ospd-openvas-20.8.1
+$ python3 setup.py install --prefix=/opt/gvm
+```
+
+Add scripts of services. As the `root` user.
+
+- Content to be created for the `OSPd`:
+
+```bash
+# cat << EOF > /etc/systemd/system/ospd.service
+[Unit]
+Description=Job that runs the ospd-openvas daemon
+Documentation=man:gvm
+After=postgresql.service
+
+[Service]
+Environment=PATH=/opt/gvm/bin/ospd-scanner/bin:/opt/gvm/bin:/opt/gvm/sbin:/opt/gvm/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+Environment=PYTHONPATH=/opt/gvm/lib/python3.6/site-packages
+Type=simple
+User=gvm
+Group=gvm
+WorkingDirectory=/opt/gvm
+PIDFile=/opt/gvm/var/run/ospd-openvas.pid
+ExecStart=/usr/bin/python3 /opt/gvm/bin/ospd-openvas --pid-file \
+         /opt/gvm/var/run/ospd-openvas.pid --unix-socket /opt/gvm/var/run/ospd.sock \
+         --log-file /opt/gvm/var/log/gvm/ospd-openvas.log --lock-file-dir \
+         /opt/gvm/var/run
+
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+
+- Content to be created for the `GVMD`:
+
+```bash
+# cat << EOF > /etc/systemd/system/gvmd.service
+[Unit]
+Description=Job that runs the gvm daemon
+Documentation=man:gvm
+After=ospd.service
+
+[Service]
+Type=forking
+User=gvm
+Group=gvm
+PIDFile=/opt/gvm/var/run/gvmd.pid
+WorkingDirectory=/opt/gvm
+ExecStartPre=/bin/sleep 60
+ExecStart=/opt/gvm/sbin/gvmd --listen=0.0.0.0 --port=9390
+--osp-vt-update=/opt/gvm/var/run/ospd.sock
+
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+
+- Content to be created for the `GSAD`:
+
+```bash
+# cat << EOF > /etc/systemd/system/gsad.service
+[Unit]
+Description=Job that runs the gsa daemon
+Documentation=man:gsa
+After=postgresql.service
+
+[Service]
+Type=forking
+PIDFile=/opt/gvm/var/run/gsad.pid
+WorkingDirectory=/opt/gvm
+ExecStart=/opt/gvm/sbin/gsad --listen=0.0.0.0 --mlisten=127.0.0.1 --mport=9390
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+
+Install the packages for the PDF reports to work. As `root` user :
+
+```bash
+# yum -y install texlive-collection-fontsrecommended
+# texlive-collection-latexrecommended texlive-changepage texlive-titlesec
+# mkdir -p /usr/share/texlive/texmf-local/tex/latex/comment
+# cd /usr/share/texlive/texmf-local/tex/latex/comment
+# wget http://mirrors.ctan.org/macros/latex/contrib/comment/comment.sty 10
+# chmod 644 comment.sty
+# texhash
+```
+
+Add cronjob. You can change the schedule as per your wish. As the `GVM` user :
+
+```
+$ crontab -e
+
+0 21 * * * /opt/gvm/bin/greenbone-nvt-sync
+0 22 * * * /opt/gvm/sbin/greenbone-certdata-sync
+0 23 * * * /opt/gvm/sbin/greenbone-scapdata-sync
+```
+
+Enable the services. As the `root` user :
+
+```bash
+# systemctl daemon-reload
+# systemctl enable ospd
+# systemctl enable gvmd
+# systemctl enable gsad
+# systemctl start ospd
+# systemctl start gvmd
+# systemctl start gsad
+```
+
+Replace the default browser with the new socket location. As the `GVM` user.
+
+Have the OpenVAS browser ID.
+
+```
+$ gvmd --get-scanners
+```
+
+Change the browser location.
+
+```
+$ gvmd --modify-scanner=<scanner_id> --scanner-host=/opt/gvm/var/run/ospd.sock
+```
+
+Verify the browser.
+
+```
+$ gvmd --verify-scanner=<scanner_id>
+```
+
+If the browser is running, you should see such a printout. *Scanner version:
+OpenVAS 7.0.1.*
+
+Create an administrator user for the user interface. As the `GVM` user :
+
+```bash
+$ gvmd --create-user admin
+$ gvmd --user=admin --new-password=<password>
+```
+
+Connect to the interface : **https://your-machine-ip**
+
+If you do not see any scan configurations in the **Configuration-> Scan Config**
+menu in the web UI, some settings need to be changed to access configurations
+and ports.
+
+Get the administrator user ID with this command. Perform transactions while
+`GVM` user.
+
+```bash
+$ gvmd --get-users --verbose
+$ gvmd --modify-setting 78eceaec-3385-11ea-b237-28d24461215b --value <admin_id>
+$ greenbone-feed-sync --type GVMD_DATA
+```
+
+
+
+
+
+
 
 
