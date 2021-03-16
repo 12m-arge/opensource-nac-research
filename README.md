@@ -213,7 +213,7 @@ After 2017 `OpenVAS` name is changed to `GVM` as part of the version 10 update.
 The document contains detailed information on the installations of the software
 to be used for the Open Source NAC solution.
 
-- [1. PacketFence](#1-packetfence-setup)
+- [1. PacketFence](#1-packetfence)
   - [1.1 System Requirements](#11-system-requirements)
   - [1.2 Installation](#12-installation)
   - [1.3 Setting and Configuring](#13-setting-and-configuring)
@@ -457,9 +457,9 @@ arranged as follows.
 
 #### Adding a Connection Profile
 
-Click on the `New Connection Profile` button from the **Configuration -> Policies
-and Access Control -> Connection Profiles** menu in the web interface. Make the
-necessary adjustments.
+Click on the `New Connection Profile` button from the **Configuration ->
+Policies and Access Control -> Connection Profiles** menu in the web interface.
+Make the necessary adjustments.
 
 Connection Profile settings named "registration" used in the tests are arranged
 as follows.
@@ -468,8 +468,9 @@ as follows.
 
 #### Adding Realm
 
-Click on the `Default Realm` button in the **Configuration -> Policies and Access
-Control -> Realms** menu in the web interface. Make the necessary adjustments.
+Click on the `Default Realm` button in the **Configuration -> Policies and
+Access Control -> Realms** menu in the web interface. Make the necessary
+adjustments.
 
 ![realm01](images/realm1.png)
 
@@ -501,5 +502,113 @@ Click on the `New Role` button in the **Configuration -> Policies and Access
 Control -> Roles** menu in the web interface and save by giving a name.
 
 ![add-role](images/add_role.png)
+
+### 2. GVM-20
+
+OpenVAS, renamed GVM, is a browser whose technology we will use for
+vulnerability detection. Required setup and usage are described below.
+
+***!!!NOTES: While proceeding with the installation, the operations will
+continue by switching between the two users. To distinguish, command lines with
+'$' at the beginning will be used to denote GVM user, command lines with '#' at
+the beginning will be used to denote Root user.***
+
+#### 2.1 Installation
+
+Start the installation by installing the necessary tools and packages. As
+`root` user: <ins>!! Unless otherwise stated, perform operations as root user.
+</ins>
+
+```bash
+# yum update
+# yum install python3
+```
+
+Set Python 3 as default.
+
+```bash
+# alternatives --config python
+
+1 /usr/libexec/no-python
+2 /usr/bin/python3
+Enter to keep the current selection[+], or type selection number: 2
+```
+
+Continue by installing the EPEL repository.
+
+```bash
+# yum install epel-release
+```
+
+SElinux must be disabled before installing Redis. For this, set the value of
+SELINUX to **disable** in `/etc/selinux/config` file. Restart the machine to
+apply the change.
+
+```
+# sestatus
+
+"Disable SELinux"
+
+# sestatus
+```
+
+Activate the Centos-Powertools repository.
+
+```bash
+# yum config-manager --set-enabled PowerTools
+```
+
+Install the Centos development tools.
+
+```bash
+# yum groupinstall -y “Development Tools”
+```
+
+Install the necessary Centos packages.
+
+```bash
+# yum install -y cmake glib2-devel zlib-devel gnutls-devel libuuid-devel libssh-devel
+# yum ınstall -y libxml2-devel libgcrypt-devel openldap-devel popt-devel redis libical-devel
+# yum install -y openssl-devel hiredis-devel radcli-devel gpgme-devel libksba-devel doxygen
+# yum install -y libpcap-devel nodejs python3-polib libmicrohttpd-devel gnutls-utils python3-devel
+# yum install -y libpq-devel texinfo xmltoman nmap sshpass socat mingw32-gcc ncurses-devel
+```
+
+Install the Postgres database server.
+
+```bash
+# yum install -y postgresql-server postgresql-contrib postgresql-server-devel
+```
+
+Configure the Postgres databases.
+
+```bash
+# sudo -Hiu postgres
+# createuser gvm
+# createdb -O gvm gvmd
+# psql gvmd
+# create role dba with superuser noinherit
+# grant dba to gvm
+# create extension if not exists "uuid-ossp"
+# create extension cryptogram
+# exit
+# systemctl restart postgresql
+```
+
+Add GVM libraries to the system.
+
+```bash
+# echo "/opt/gvm/lib" > /etc/ld.so.conf.d/gvm.conf
+# ldconfig
+```
+
+Add the GVM user and create the directory structure.
+
+```bash
+# useradd -r -d /opt/gvm -s /bin/bash gvm
+# mkdir /opt/gvm
+# mkdir /opt/gvm/src
+# chown -R gvm:gvm /opt/gvm
+```
 
 
