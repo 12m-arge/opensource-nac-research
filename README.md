@@ -213,12 +213,12 @@ After 2017 `OpenVAS` name is changed to `GVM` as part of the version 10 update.
 The document contains detailed information on the installations of the software
 to be used for the Open Source NAC solution.
 
-- [1. PacketFence Setup](#packetfence-setup)
-  - [1.1 System Requirements](#system-requirements)
-  - [1.2 Installation](#install-pf)
-  - [1.3 Setting and Configuring](#setting)
-- [2. GVM-20 Setup](#openvas-setup)
-  - [2.1 Installation](#install-gvm)
+- [1. PacketFence](#1-packetfence-setup)
+  - [1.1 System Requirements](#11-system-requirements)
+  - [1.2 Installation](#12-installation)
+  - [1.3 Setting and Configuring](#13-setting-and-configuring)
+- [2. GVM-20](#2-gvm-20)
+  - [2.1 Installation](#21-installation)
 
 ---
 
@@ -398,4 +398,50 @@ cliEnablePwd=tei112552
 ```
 
 #### Adding Domains to Active Directory
+
+To connect PacketFence to the domain, make the necessary arrangements by
+clicking the `New Domain` button from the **Configuration -> Policies and Access
+Control -> Active Directory Domains** menu.
+
+![add-active-directory](images/add_ad.png)
+
+You can also edit from `/usr/local/pf/conf/domain.conf` file. The configuration
+used in the tests is arranged as follows.
+
+```
+[teilab]
+status=enabled
+ntlm_cache_filter=(&(samAccountName=*)(!(|(lockoutTime=>0)(userAccountControl:1.2.840.113556.1.4.803:=2))))
+registration=0
+ntlm_cache_expiry=3600
+dns_name=tei.lab
+dns_servers=172.22.20.20
+ou=Computers
+ntlm_cache_on_connection=disabled
+workgroup=TEI
+ntlm_cache_batch_one_at_a_time=disabled
+ad_server=172.22.20.20
+sticky_dc=*
+ntlm_cache_batch=disabled
+server_name=%h
+ntlmv2_only=0
+```
+
+#### Adding to Authentication Source
+
+"Authentication Source" must be added to determine the criteria by which users
+will log in. We base our tests on AD criteria.
+
+Select the "Active Directory" criteria by clicking the `New Internal Source`
+button in the **Configuration -> Policies and Access Control -> Authentication
+Sources** section in the web interface.
+
+The AD Authentication Source settings used in the tests are arranged as follows.
+
+[authentication01](images/auth1.png)
+
+[authentication02](images/auth2.png)
+
+[authentication03](images/auth3.png)
+
 
