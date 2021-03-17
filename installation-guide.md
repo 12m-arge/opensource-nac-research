@@ -157,7 +157,7 @@ cliAccess=Y
 # cliTransport could be: Telnet, SSH or Serial
 cliTransport=SSH
 cliUser=admin
-cliPwd=arge11252
+cliPwd=it11252
 always_trigger=1
 
 [172.22.41.253]
@@ -165,26 +165,26 @@ description=Aruba
 registrationVlan=46
 defaultVlan=45
 isolationVlan=45
-radiusSecret=arge1234
+radiusSecret=it1234
 RoleMap=Y
 registrationUrl=http://172.22.20.22/Aruba::2930M
 coaPort=3799
 UrlMap=Y
 isolationRole=45
 registrationRole=44
-SNMPCommunityWrite=argetest1
+SNMPCommunityWrite=ittest1
 group=default
 SNMPVersion=2c
 SNMPVersionTrap=2c
 level3Vlan=44
 level1Vlan=42
 level2Vlan=43
-SNMPCommunityRead=argetest1
+SNMPCommunityRead=ittest1
 VoIPEnabled=Y
-SNMPCommunityTrap=argetest1
+SNMPCommunityTrap=ittest1
 useCoA=N
-cliPwd=arge112552
-cliEnablePwd=arge112552
+cliPwd=it112552
+cliEnablePwd=it112552
 ```
 
 #### Adding Domains to Active Directory
@@ -199,16 +199,16 @@ You can also edit from `/usr/local/pf/conf/domain.conf` file. The configuration
 used in the tests is arranged as follows.
 
 ```
-[argelab]
+[itlab]
 status=enabled
 ntlm_cache_filter=(&(samAccountName=*)(!(|(lockoutTime=>0)(userAccountControl:1.2.840.113556.1.4.803:=2))))
 registration=0
 ntlm_cache_expiry=3600
-dns_name=arge.lab
+dns_name=it.lab
 dns_servers=172.22.20.20
 ou=Computers
 ntlm_cache_on_connection=disabled
-workgroup=arge
+workgroup=it
 ntlm_cache_batch_one_at_a_time=disabled
 ad_server=172.22.20.20
 sticky_dc=*
@@ -275,7 +275,7 @@ permit_custom_attributes=disabled
 radius_auth_proxy_type=keyed-balance
 radius_auth_compute_in_pf=enabled
 eduroam_radius_auth=
-domain=argelab
+domain=itlab
 eduroam_radius_auth_proxy_type=keyed-balance
 eduroam_radius_acct=
 radius_acct_proxy_type=load-balance
@@ -283,7 +283,7 @@ radius_auth=
 eduroam_radius_auth_compute_in_pf=enabled
 eduroam_radius_acct_proxy_type=load-balance
 radius_acct=
-ldap_source=argelab
+ldap_source=itlab
 ```
 
 #### Adding a Roles
