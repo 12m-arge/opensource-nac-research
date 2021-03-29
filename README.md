@@ -25,17 +25,6 @@
 
 ---
 
-## CONTRIBUTORS
-
-| Name - Surname    |
-| :---------------- |
-| ARDA ÖZKAL        |
-| FATIH MALAKÇI     |
-| RUKİYE GÜL ÖZTÜRK |
-| SERHAT ERDENER    |
-
----
-
 ## PROJECT SCOPE
 
 This is a research of open source NAC solutions that can be used instead of
@@ -458,11 +447,9 @@ box" in our tests.
 
 ---
 
+## CONTRIBUTORS
 
-
-
-
-
-
-
-
+- Arda Özkal
+- Fatih Malakçı
+- Rukiye Gül Öztürk
+- Serhat Erdener
